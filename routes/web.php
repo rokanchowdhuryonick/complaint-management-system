@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/auth/login', [AdminAuthController::class, 'showLoginPage'])->name('admin.login');
+Route::post('/auth/login', [AdminAuthController::class, 'login']);
+
+Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('dashboard.view');
