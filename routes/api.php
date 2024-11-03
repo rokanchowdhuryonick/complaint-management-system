@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// User Authentication Routes (for React app)
+Route::post('/login', [UserAuthController::class, 'login']);
+Route::post('/logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
+
+
+// Protected Routes (Require Sanctum Authentication)
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user-profile', [UserProfileController::class, 'profile'])->name('user.profile');
+
+    // User Complaint Routes
+    Route::prefix('complaints')->name('complaints.')->group(function () {
+        Route::post('/', [UserComplaintController::class, 'store'])->name('store'); // User creates complaint
+        Route::get('/', [UserComplaintController::class, 'index'])->name('index'); // User views their complaints
+        Route::get('/{id}', [UserComplaintController::class, 'show'])->name('show'); // View specific complaint
+    });
 });
