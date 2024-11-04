@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AdminAuthController::class, 'showLoginPage'])->name('admin.login.view');
 Route::post('/auth/login', [AdminAuthController::class, 'login'])->name('admin.login');
-Route::get('/categories', [CategoryController::class, 'index']);
 
 
 Route::middleware(['auth:web'])->group(function () {
@@ -32,7 +31,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/{id}', [AdminComplaintController::class, 'show'])->name('show');
         Route::patch('/{id}', [AdminComplaintController::class, 'update'])->name('update');
     });
-
+    Route::get('/categories', [CategoryController::class, 'index']);
+    
     // Admin Reports Routes
     Route::prefix('admin/reports')->name('admin.reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');

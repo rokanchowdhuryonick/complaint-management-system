@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\UserComplaintController;
 use App\Http\Controllers\API\UserProfileController;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // User Authentication Routes (for React app)
 Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/register', [UserAuthController::class, 'register']);
-
+Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user-profile', [UserProfileController::class, 'profile'])->name('user.profile');
