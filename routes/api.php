@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\UserAuthController;
+use App\Http\Controllers\API\UserComplaintController;
+use App\Http\Controllers\API\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,17 +19,17 @@ use Illuminate\Support\Facades\Route;
 
 // User Authentication Routes (for React app)
 Route::post('/login', [UserAuthController::class, 'login']);
-Route::post('/logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/register', [UserAuthController::class, 'register']);
 
 
-// Protected Routes (Require Sanctum Authentication)
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user-profile', [UserProfileController::class, 'profile'])->name('user.profile');
+    Route::post('/logout', [UserAuthController::class, 'logout']);
 
     // User Complaint Routes
     Route::prefix('complaints')->name('complaints.')->group(function () {
-        Route::post('/', [UserComplaintController::class, 'store'])->name('store'); // User creates complaint
-        Route::get('/', [UserComplaintController::class, 'index'])->name('index'); // User views their complaints
-        Route::get('/{id}', [UserComplaintController::class, 'show'])->name('show'); // View specific complaint
+        Route::post('/', [UserComplaintController::class, 'store'])->name('store');
+        Route::get('/', [UserComplaintController::class, 'index'])->name('index'); 
+        Route::get('/{id}', [UserComplaintController::class, 'show'])->name('show'); 
     });
 });

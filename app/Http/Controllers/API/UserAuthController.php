@@ -25,31 +25,53 @@ class UserAuthController extends Controller
             'role' => 'user',
         ]);
 
-        $token = $user->createToken('user_auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+                'status' => true,
+                'message' => 'Login successful',
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                    ],
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                ]
+            ], 200);
     }
 
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $credentials['role'] = 'user'; // Ensures only users can log in via API
+        $credentials['role'] = 'user';
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('user_auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ]);
+                'status' => true,
+                'message' => 'Login successful',
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                    ],
+                    'access_token' => $token,
+                    'token_type' => 'Bearer',
+                ]
+            ], 200);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid credentials',
+        ], 401);
     }
 
 }

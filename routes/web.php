@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminComplaintController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AdminAuthController::class, 'showLoginPage'])->name('admin.login.view');
 Route::post('/auth/login', [AdminAuthController::class, 'login'])->name('admin.login');
+Route::get('/categories', [CategoryController::class, 'index']);
 
 
 Route::middleware(['auth:web'])->group(function () {
